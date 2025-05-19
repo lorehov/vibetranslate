@@ -1,0 +1,5 @@
+Django
+django-bootstrap5
+ebooklib
+beautifulsoup4
+requests>=2.31.0 

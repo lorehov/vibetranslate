@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Manage Glossary for {{ book.title }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary">Add Entry</button>
+    </form>
+    <h3>Glossary Entries</h3>
+    <ul class="list-group">
+        {% for glossary in glossaries %}
+            <li class="list-group-item">
+                <form method="post" action="{% url 'books:update_glossary' glossary.id %}">
+                    {% csrf_token %}
+                    <input type="text" name="word" value="{{ glossary.word }}" class="form-control mb-2">
+                    <input type="text" name="translation" value="{{ glossary.translation }}" class="form-control mb-2">
+                    <button type="submit" class="btn btn-primary">Update</button>
+                    <a href="{% url 'books:delete_glossary' glossary.id %}" class="btn btn-danger">Delete</a>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %} 

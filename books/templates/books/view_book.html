@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ book.title }}</h2>
+    <p>Author: {{ book.author|default:"Unknown" }}</p>
+    <p>Language: {{ book.language }}</p>
+    <div class="mb-4">
+        <a href="{% url 'books:translate_book' book.id %}" class="btn btn-primary">Translate Book</a>
+        <a href="{% url 'books:manage_glossary' book.id %}" class="btn btn-primary">Manage Glossary</a>
+        <a href="{% url 'books:save_book' book.id %}" class="btn btn-success">Save Book</a>
+    </div>
+    <h3>Parts</h3>
+    <ul class="list-group">
+        {% for part in book.parts.all %}
+            <li class="list-group-item">
+                <h4>{{ part.title }}</h4>
+                <h5>Chapters</h5>
+                <ul class="list-group">
+                    {% for chapter in part.chapters.all %}
+                        <li class="list-group-item">
+                            <h6>{{ chapter.title }}</h6>
+                            <a href="{% url 'books:edit_chapter' chapter.id %}" class="btn btn-primary">Edit Chapter</a>
+                            <ul class="list-group">
+                                {% for chunk in chapter.chunks.all %}
+                                    <li class="list-group-item">
+                                        <strong>Original:</strong> {{ chunk.original_text|slice:":100" }}...<br>
+                                        <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#chunk{{ chunk.id }}" aria-expanded="false" aria-controls="chunk{{ chunk.id }}">
+                                            Show/Hide Full Text
+                                        </button>
+                                        <div class="collapse" id="chunk{{ chunk.id }}">
+                                            {{ chunk.original_text }}<br>
+                                        </div>
+                                        <strong>Translated Text:</strong> {{ chunk.translated_text|default:"Not translated" }}<br>
+                                        <strong>Translated:</strong> {{ chunk.translated|yesno:"Yes,No" }}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %} 
