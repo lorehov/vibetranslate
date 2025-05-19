@@ -3,7 +3,7 @@ pkill gunicorn
 sleep 2
 source .venv/bin/activate && \
     source .env && \
-    gunicorn mysite.wsgi --daemon \
+    gunicorn translator.wsgi --daemon \
      --pid gunicorn.data/gunicorn.pid \
      --reload \
      --access-logfile gunicorn.data/access.log \
